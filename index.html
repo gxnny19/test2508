@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장경건의 JUST 쇼핑몰</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #333333;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .logo {
+            height: 50px;
+        }
+
+        nav {
+            background-color: #f8f8f8;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .menu {
+            display: flex;
+            gap: 40px;
+            padding: 15px;
+        }
+
+        .menu-item {
+            position: relative;
+            padding: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 0;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            z-index: 999;
+        }
+
+        .menu-item:hover .submenu {
+            display: block;
+        }
+
+        .submenu div {
+            padding: 5px 10px;
+            white-space: nowrap;
+        }
+
+        .slider {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            aspect-ratio: 4 / 1.2;
+            overflow: hidden;
+            margin: 0 auto;
+            z-index: 1;
+        }
+
+        .slides {
+            display: flex;
+            width: calc(100% * 3);
+            height: 100%;
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .slides .slide {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            flex: 0 0 100%;
+        }
+
+        .slides .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .slide-text {
+            position: absolute;
+            bottom: 20px;
+            left: 30px;
+            color: white;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 10px 20px;
+            font-size: 20px;
+            border-radius: 5px;
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+
+        .section-c {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab-section {
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .tab-buttons button {
+            flex: 1;
+            padding: 10px;
+            cursor: pointer;
+            background: #f0f0f0;
+            border: none;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-buttons button.active {
+            border-bottom: 2px solid #333;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #f8f8f8;
+        }
+
+        .popup {
+            position: fixed;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border: 2px solid #444;
+            padding: 20px;
+            z-index: 999;
+            display: none;
+        }
+
+        .popup button {
+            margin-top: 10px;
+        }
+
+        .indicators {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            gap: 10px;
+        }
+
+        .indicators .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .indicators .dot.active {
+            background-color: #333;
+        }
+
+        #gallery {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #gallery img {
+            width: 80%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="#">
+            <img src="./images/logo.png" alt="쇼핑몰 로고" class="logo" />
+        </a>
+        <h1>JUST 쇼핑몰</h1>
+    </header>
+
+    <nav>
+        <div class="menu">
+            <div class="menu-item">상의
+                <div class="submenu">
+                    <div>블라우스</div>
+                    <div>티</div>
+                    <div>셔츠</div>
+                    <div>니트</div>
+                </div>
+            </div>
+            <div class="menu-item">하의
+                <div class="submenu">
+                    <div>청바지</div>
+                    <div>반바지</div>
+                    <div>긴바지</div>
+                    <div>레깅스</div>
+                </div>
+            </div>
+            <div class="menu-item">아우터
+                <div class="submenu">
+                    <div>자켓</div>
+                    <div>코트</div>
+                    <div>가디건</div>
+                    <div>머플러</div>
+                </div>
+            </div>
+
+            <div class="menu-item">악세사리
+                <div class="submenu">
+                    <div>귀걸이</div>
+                    <div>목걸이</div>
+                    <div>반지</div>
+                    <div>팔찌</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="slider">
+        <div class="slides" id="slides">
+            <div class="slide">
+                <img src="./images/슬라이드3.png" alt="패션 1" />
+                <div class="slide-text">여름 컬렉션</div>
+            </div>
+            <div class="slide">
+                <img src="./images/슬라이드1.png" alt="패션 2" />
+                <div class="slide-text">가을 코디 제안 🍁</div>
+            </div>
+            <div class="slide">
+                <img src="./images/슬라이드2.png" alt="패션 3" />
+                <div class="slide-text">다양한 디자인</div>
+            </div>
+        </div>
+
+    </div>
+    <div class="indicators" id="indicators"></div>
+    <div class="section-c">
+        <div class="tab-section">
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="showTab('notice', event)">공지사항</button>
+                <button class="tab-btn" onclick="showTab('gallery', event)">갤러리</button>
+            </div>
+            <div id="notice" class="tab-content active">
+                <ul>
+                    <li>📌 9월 신상품 입고 안내 – 신상 최대 30% 할인!</li>
+                    <li>🎁 여름 정기 세일 종료 임박 – 오늘까지!</li>
+                    <li>🧾 주문/배송 시스템 점검 안내 (8/10 새벽 2~4시)</li>
+                    <li>✨ 신규 회원가입 시 10,000원 쿠폰 증정!</li>
+                </ul>
+            </div>
+            <div id="gallery" class="tab-content"></div>
+        </div>
+
+        <div class="tab-section">
+            <h3>🎉 쇼핑몰 배너</h3>
+            <img src="https://wrtn-image-user-output.s3.ap-northeast-2.amazonaws.com/gen-image/6892b2a5b1936c819c2e6c4c/5eecfa1c-9507-4317-8e07-05ac94a5d102.png"
+                alt="배너">
+        </div>
+
+        <div class="tab-section">
+            <h3>🔗 바로가기</h3>
+            <ul>
+                <li><a href="#">배송조회</a></li>
+                <li><a href="#">고객센터</a></li>
+                <li><a href="#">회원가입</a></li>
+                <li><a href="#">이벤트</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <img src="./images/logo.png" alt="로고" style="height: 30px;">
+        <div>COPYRIGHT ⓒ JUST 쇼핑몰 ALL RIGHTS RESERVED</div>
+        <div>SNS 링크</div>
+    </footer>
+
+    <!-- <div class="popup" id="popup">
+        <h2>🎁 이벤트 안내</h2>
+        <p>신규 가입 시 <strong>30% 할인 쿠폰</strong>을 드립니다!</p>
+        <button onclick="document.getElementById('popup').style.display='none'">닫기</button>
+    </div> -->
+
+    <script>
+        // 슬라이더
+        let currentIndex = 0;
+        const slides = document.getElementById("slides");
+        const totalSlides = slides.children.length;
+
+        function showSlide(index) {
+            currentIndex = (index + totalSlides) % totalSlides;
+            slides.style.transform = `translateX(-${(100 / totalSlides) * currentIndex}%)`;
+            updateIndicators();
+        }
+
+        function nextSlide() {
+            showSlide(currentIndex + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentIndex - 1);
+        }
+
+        setInterval(() => {
+            nextSlide();
+        }, 3000);
+
+
+        function showTab(id, event) {
+            // 모든 탭 내용 숨기고 버튼 비활성화
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            // 선택한 탭 보여주고 버튼 활성화
+            document.getElementById(id).classList.add('active');
+            event.target.classList.add('active');
+
+            // 갤러리 탭이라면, 이미지를 동적으로 추가
+            if (id === "gallery") {
+                const gallery = document.getElementById("gallery");
+
+                // 이미지가 아직 추가되지 않았다면
+                if (gallery.children.length === 0) {
+                    const images = [
+                        "./images/상의.png",
+                        "./images/아우터.png",
+                        "./images/액세서리.png"
+                    ];
+
+                    images.forEach(src => {
+                        const img = document.createElement("img");
+                        img.src = src;
+                        img.alt = "갤러리 이미지";
+                        gallery.appendChild(img);
+                    });
+                }
+            }
+        }
+
+        window.onload = function () {
+            setTimeout(() => {
+                document.getElementById("popup").style.display = "block";
+            }, 2000);
+        }
+        const indicatorsContainer = document.getElementById("indicators");
+
+        // 인디케이터 점 생성
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement("div");
+            dot.classList.add("dot");
+            if (i === 0) dot.classList.add("active");
+            dot.addEventListener("click", () => showSlide(i));
+            indicatorsContainer.appendChild(dot);
+        }
+
+        // 인디케이터 업데이트 함수
+        function updateIndicators() {
+            const dots = document.querySelectorAll(".dot");
+            dots.forEach(dot => dot.classList.remove("active"));
+            dots[currentIndex].classList.add("active");
+        }
+
+        function showSlide(index) {
+            currentIndex = (index + totalSlides) % totalSlides;
+            slides.style.transform = `translateX(-${currentIndex * 1200}px)`;
+            updateIndicators();
+        }
+
+    </script>
+</body>
+
+</html>
