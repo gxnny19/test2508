@@ -79,10 +79,11 @@
             position: relative;
             width: 100%;
             max-width: 1200px;
-            aspect-ratio: 4 / 1.2;
+            height: 450px;
             overflow: hidden;
             margin: 0 auto;
             z-index: 1;
+            border-radius: 10px;
         }
 
         .slides {
@@ -102,7 +103,7 @@
         .slides .slide img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
             display: block;
         }
 
@@ -186,15 +187,20 @@
 
         .popup {
             position: fixed;
-            top: 30%;
+            top: 35%;
             left: 50%;
             transform: translate(-50%, -50%);
             background: white;
-            border: 2px solid #444;
-            padding: 20px;
-            z-index: 999;
+            border: 2px solid #666;
+            padding: 20px 30px;
+            z-index: 9999;
             display: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            text-align: center;
+            border-radius: 8px;
         }
+
 
         .popup button {
             margin-top: 10px;
@@ -233,6 +239,33 @@
             height: auto;
             border-radius: 8px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #notice li {
+            cursor: pointer;
+            padding: 8px 12px;
+            transition: background-color 0.2s, transform 0.1s;
+            border-radius: 4px;
+        }
+
+        #notice li:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.02);
+            color: #222;
+        }
+
+        #notice li::after {
+            
+            color: #aaa;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        #notice li:hover::after {
+            color: #333;
+        }
+        .str{
+            color: red;
         }
     </style>
 </head>
@@ -286,15 +319,15 @@
     <div class="slider">
         <div class="slides" id="slides">
             <div class="slide">
-                <img src="./images/슬라이드3.png" alt="패션 1" />
+                <img src="./images/슬라이드11.png" alt="패션 1" />
                 <div class="slide-text">여름 컬렉션</div>
             </div>
             <div class="slide">
-                <img src="./images/슬라이드1.png" alt="패션 2" />
+                <img src="./images/슬라이드22.png" alt="패션 2" />
                 <div class="slide-text">가을 코디 제안 🍁</div>
             </div>
             <div class="slide">
-                <img src="./images/슬라이드2.png" alt="패션 3" />
+                <img src="./images/슬라이드33.png" alt="패션 3" />
                 <div class="slide-text">다양한 디자인</div>
             </div>
         </div>
@@ -309,13 +342,19 @@
             </div>
             <div id="notice" class="tab-content active">
                 <ul>
-                    <li>📌 9월 신상품 입고 안내 – 신상 최대 30% 할인!</li>
-                    <li>🎁 여름 정기 세일 종료 임박 – 오늘까지!</li>
-                    <li>🧾 주문/배송 시스템 점검 안내 (8/10 새벽 2~4시)</li>
-                    <li>✨ 신규 회원가입 시 10,000원 쿠폰 증정!</li>
+                    <li onclick="openPopup(0)">📌 9월 신상품 입고 안내 – 신상 최대 <strong class="str">50% 할인!</strong></li>
+                    <li onclick="openPopup(1)">🎁 여름 정기 세일 종료 임박 – <strong class="str">오늘까지!</strong></li>
+                    <li onclick="openPopup(2)">🧾 주문/배송 시스템 점검 안내 (8/10 새벽 2~4시)</li>
+                    <li onclick="openPopup(3)">✨ 신규 회원가입 시 <strong class="str">10,000원</strong> 쿠폰 증정!</li>
                 </ul>
+
             </div>
             <div id="gallery" class="tab-content"></div>
+        </div>
+        <div class="popup" id="notice-popup">
+            <h3 id="popup-title">공지사항</h3>
+            <p id="popup-content">내용이 여기에 표시됩니다.</p>
+            <button onclick="closePopup()">닫기</button>
         </div>
 
         <div class="tab-section">
@@ -341,11 +380,11 @@
         <div>SNS 링크</div>
     </footer>
 
-    <!-- <div class="popup" id="popup">
+    <div class="popup" id="popup">
         <h2>🎁 이벤트 안내</h2>
         <p>신규 가입 시 <strong>30% 할인 쿠폰</strong>을 드립니다!</p>
         <button onclick="document.getElementById('popup').style.display='none'">닫기</button>
-    </div> -->
+    </div>
 
     <script>
         // 슬라이더
@@ -370,6 +409,37 @@
         setInterval(() => {
             nextSlide();
         }, 3000);
+        // 공지사항 내용 매핑
+        const noticeData = [
+            {
+                title: "📌 9월 신상품 입고 안내",
+                content: "9월 신상품이 입고되었습니다. 모든 신상품은 최대 50%까지 할인 중입니다. 지금 확인하세요!"
+            },
+            {
+                title: "🎁 여름 정기 세일 종료 임박",
+                content: "여름 정기 세일이 오늘 자정까지 진행됩니다. 마감 전에 원하는 상품을 구매하세요!"
+            },
+            {
+                title: "🧾 주문/배송 시스템 점검 안내",
+                content: "8월 10일 새벽 2시부터 4시까지 시스템 점검으로 인해 주문 및 배송조회 서비스가 일시 중단됩니다."
+            },
+            {
+                title: "✨ 신규 회원가입 시 쿠폰 증정",
+                content: "지금 회원가입하면 즉시 사용할 수 있는 10,000원 할인 쿠폰을 드립니다!"
+            }
+        ];
+
+        // 팝업 열기
+        function openPopup(index) {
+            document.getElementById("popup-title").textContent = noticeData[index].title;
+            document.getElementById("popup-content").textContent = noticeData[index].content;
+            document.getElementById("notice-popup").style.display = "block";
+        }
+
+        // 팝업 닫기
+        function closePopup() {
+            document.getElementById("notice-popup").style.display = "none";
+        }
 
 
         function showTab(id, event) {
