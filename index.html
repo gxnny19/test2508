@@ -255,7 +255,7 @@
         }
 
         #notice li::after {
-            
+
             color: #aaa;
             font-size: 12px;
             margin-left: 5px;
@@ -264,7 +264,8 @@
         #notice li:hover::after {
             color: #333;
         }
-        .str{
+
+        .str {
             color: red;
         }
     </style>
@@ -386,12 +387,17 @@
         <button onclick="document.getElementById('popup').style.display='none'">닫기</button>
     </div>
 
+
+
+
     <script>
         // 슬라이더
         let currentIndex = 0;
         const slides = document.getElementById("slides");
         const totalSlides = slides.children.length;
 
+        
+        
         function showSlide(index) {
             currentIndex = (index + totalSlides) % totalSlides;
             slides.style.transform = `translateX(-${(100 / totalSlides) * currentIndex}%)`;
@@ -496,11 +502,7 @@
             dots[currentIndex].classList.add("active");
         }
 
-        function showSlide(index) {
-            currentIndex = (index + totalSlides) % totalSlides;
-            slides.style.transform = `translateX(-${currentIndex * 1200}px)`;
-            updateIndicators();
-        }
+        
 
     </script>
 </body>
